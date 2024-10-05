@@ -1,0 +1,231 @@
+PRATICAL-2 
+SINGLE PATTERN WITH 4 LED’S 
+CODE: 
+Import RPi.GPIO as GPIO 
+Import time 
+GPIO. setmode (GPIO.BOARD)  
+GPIO.setup(7,11,13,23,OUT) 
+for x in range (0,7): 
+                      GPIO.output(7,True) 
+                      Time.sleep(0.5) 
+                       GPIO.output(7,False) 
+                      GPIO.output(11,True) 
+                       time.sleep(0.5) 
+                           Ans so on same as 
+GPIO.cleanup() 
+    
+HARDWARE REQUIREMENT 
+BREADBOARD,LED-LIGHT-EMITING0DIODE,RGISTER,JUMPER WIRE,RASPBERRY 
+PI,KEYBOARD,MOUSE,HDMI,ETHERNET CABLE,POWER SUPPLY,MALE TO FEMALE JUMPER WIRE. 
+ 
+  
+PRACTICAL NO-3 
+DIFFERENT LED PATTERN WITH RASPBERRY PI. 
+
+CODE- 
+Import RPi.GPIO as GPIO 
+Import time 
+GPIO. Setmode (GPIO.BOARD) 
+Led1 =7, led2 =11 , led3 =13 , led4 =23 
+GPIO.setup(led1,GPIO.OUT) 
+GPIO.setup(led2,GPIO.OUT) 
+GPIO.setup(led3,GPIO.OUT) 
+GPIO.setup(led4,GPIO.OUT) 
+GPIO.output(led1,False) 
+GPIO.output(led2,False) 
+GPIO.output(led3,False) 
+GPIO.output(led4,False) 
+ 
+def ledpattern (ledval1,ledval2,ledval3,ledval4): 
+         GPIO.output(led1,ledval1)        
+         GPIO.output(led2,ledval2) 
+         GPIO.output(led3,ledval3) 
+         GPIO.output(led4,ledval4) 
+def patternone(): 
+     for i in range (0,3): 
+          ledpattern(1,0,1,0) 
+          time.sleep(1) 
+          ledpattern(0,1,0,1) 
+          time.sleep(1) 
+ def patterntwo(): 
+    for i in range (0,5): 
+          ledpattern((1,0,0,0),(0,1,0,0),(0,0,1,0),(0,0,0,1))                time.sleep(0.5) 
+def patternthree(): 
+   for  i in range (0,5): 
+          ledpattern((0,1,1,1),(1,0,1,1),(1,1,0,1),(1,1,1,0))          time.sleep(0.5) 
+ 
+try: 
+     while True: 
+             patternone() 
+             patterntwo() 
+             patternthree() 
+ 
+finally:  
+      GPIO.cleanup() 
+ 
+
+HARDWARE REQUIREMENT 
+BREADBOARD ,LED-LIGHT-EMITING0DIODE,RGISTER,JUMPER WIRE,RASPBERRY 
+PI,KEYBOARD,MOUSE,HDMI,ETHERNET CABLE,POWER SUPPLY,MALE TO FEMALE JUMPER WIRE. 
+ 
+    
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+PRACTICAL NO-4 
+INTERFACING PI CAMERA WITH RASPBERRY 
+sudo nano test_photo.py sudo nano test_video.h264.py 
+sudo python test_photo.py                                                                             sudo python test_video.py 
+                                          for the open video ( omxplayer test_video.h264) 
+                                           sudo raspi-config 
+CODE-(  TO TAKE PHOTO) 
+import time 
+from picamera import PiCamera 
+camera = PiCamera() 
+camera.resolution = (1280,720) 
+camera.start_preview() 
+time.sleep(5) 
+camera.capture(‘/home/Pi/Bsc-RPI-kits/TYBSc_RPI/test_photo.jpg’) 
+camera.stop_preview() 
+ 
+CODE-(TO TAKE VIDEO) 
+import time 
+from picamera import PiCamera 
+camera = PiCamera() 
+camera.start_preview() 
+camera.start_recording(‘video1.h264’) 
+camera.wait_recording()     OR camera.wait_recording(10)    ,     camera.stop_recording() , camera.stop_preview() 
+print(“Finished Recording”) 
+ 
+ 
+ 
+ 
+ 
+PRACTICAL NO-5 
+DISPLAYING TIME OVER 4 DIGIT 7 SEGMENT DISPLAY USING 
+
+RASPBERRY PI. 
+sudo nano tm1337clocknew.py 
+sudo python tm1337clocknew.py  
+CODE- 
+from time import sleep 
+import tm1637py18 
+try: 
+    import _thread as thread   
+except ImportError: 
+    print("Error importing threading module")  
+Display = tm1637py18.TM1637(CLK=5, DIO=6, brightness=1.0) 
+try: 
+    print("Starting clock in the background (press CTRL + C to stop):") 
+    Display.show_clock(military_time=False)       
+    print("Continue Python script and tweak display:") 
+    sleep(5) 
+    Display.show_double_point(False)   
+    sleep(5) 
+    Loops = 3 
+except KeyboardInterrupt: 
+    print("Properly closing the clock and open GPIO pins") 
+    Display.cleanup()   
+ 
+ 
+ 
+ 
+PRACTICAL NO-6 
+RASPBERRY PI BASED OSCILLOSCOPE 
+
+CODE- 
+import time 
+import Adafruit_ADS1x15 
+adc = Adafruit_ADS1x15.ADS1015()    
+GAIN = 2  
+print("Reading ADS1x15 values, press Ctrl+C to exit...")  
+print("{0:>6} {1:>6} {2:>6} {3:>6}".format("CH0", "CH1", "CH2", "CH3")) 
+print('-' * 37)   
+try: 
+    while True: 
+        values = [0] * 4 
+        for i in range(4): 
+            values[i] = adc.read_adc(i, gain=GAIN) 
+        print("{0:>6} {1:>6} {2:>6} {3:>6}".format(*values)) 
+        time.sleep(0.5) 
+except KeyboardInterrupt: 
+    print("Stopping and cleaning up...") 
+finally: 
+    print("Clean up done.") 
+ 
+  
+PRACTICAL NO-7 
+INTERFACINF RASPBERRY PI WITH RFID 
+
+sudo nano Read.py  , sudo nano Write.py 
+sudo python Read.py , sudo python Write.py 
+TERMINAL COMMAND----- 
+sudo raspi-config 
+sudo pip install mfrc522 
+CODE- (Read.py) 
+import RPi.GPIO as GPIO 
+from mfrc522 import SimpleMFRC522 
+import time 
+GPIO.setmode(GPIO.BCM) 
+reader = SimpleMFRC522() 
+try: 
+    print("Place your RFID tag near the reader...") 
+    id, text = reader.read() 
+    print("ID:", id) 
+    print("Text:", text) 
+finally: 
+    GPIO.cleanup()  
+(Write.py) 
+import RPi.GPIO as GPIO 
+import time 
+from mfrc522 import SimpleMFRC522 
+reader = SimpleMFRC522() 
+try: 
+    text = input("Enter the new data to write to the RFID tag: ") 
+    print("Now place your tag near the reader to write data...") 
+    # Write the data to the RFID tag 
+    reader.write(text) 
+ 
+    print("Data has been written successfully!") 
+finally: 
+    # Cleanup GPIO after the operation 
+    GPIO.cleanup() 
+
+
+PRACTICAL NO-8 
+RASPBERRY PI GPS MODULE INTERFACING 
+
+sudo nano gpsfinal.py 
+minicom -b 9600 -0 -D/dev/ttyUSB0 
+teminal command— 
+sudo raspi-config 
+sudo apt-get update 
+sudo apt-get upgrade 
+CODE— 
+Import time 
+Import os 
+Import serial 
+Import string 
+Import pymed2 
+Import pynmea2 
+port = “/dev/ttyUSB0” 
+while 1: 
+       ser = serial.Serial(port.baudrate = 9600,timeout = 0.5) 
+dataout = pymed2 NMEA streamReader() 
+data = ser.readline() 
+print(“Loading”) 
+if data [0:6] = = $’GNGGA’: 
+           msg = pynmea2.parse (data) 
+latitude= msg.latitude 
+longitude= msg.longitude 
+print(latitude) 
+print(longitude) 
+time.sleep(10) 
+  
