@@ -1,0 +1,1181 @@
+
+Practical No.1 
+Aim (a): Create a simple calculator application using servlet. 
+Code- 
+Index.html 
+<html> <body> 
+        <form method="post" action="CalcServlet"> 
+            NO-1 <input type="text" name="t1"> 
+            NO-2 <input type="text" name="t2">  <br> <br> 
+            <input type="submit" value="+" name="btn"> 
+            <input type="submit" value="-" name="btn"> 
+            <input type="submit" value="*" name="btn"> 
+            <input type="submit" value="/" name="btn"> 
+        </form> 
+        <h3> Sonu Yadav TYIT T053 </h3>  </body></html> 
+CalcServlet.java 
+import java.io.*;  
+import javax.servlet.*;  
+import javax.servlet.http.*;  
+import javax.servlet.annotation.WebServlet; 
+@WebServlet("/CalcServlet")  // URL pattern for the servlet 
+public class CalcServlet extends HttpServlet {     
+    public void doPost(HttpServletRequest request, HttpServletResponse response)  
+            throws ServletException, IOException {       
+        response.setContentType("text/html");  
+     PrintWriter out = response.getWriter();  
+      int a=Integer.parseInt(request.getParameter("t1")); 
+        int b=Integer.parseInt(request.getParameter("t2"));  
+        int c=0;  
+        String op=request.getParameter("btn");  
+       if (op.equals("+"))   
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+            c=a+b;  
+       else if (op.equals("-"))   
+            c=a-b;  
+         else if (op.equals("*"))   
+            c=a*b;  
+         else if (op.equals("/"))   
+            c=a/b;  
+       out.println("<b>"+a+op+b+" = "+c+"<b>");  
+       out.println("<br>Sonu Yadav TYIT T053");    }    }  
+
+Aim: ( b)Create a servlet for a login page. If the username and password 
+are correct then it says message “Hello ” else a message “login failed”. 
+Code- 
+Index.html 
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <title>Login</title> 
+        <meta charset="UTF-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    </head> 
+    <body> 
+        <form action="login" method="get" name="frm"> 
+            Enter username :  
+            <input name="uname" type="text"/> 
+            Enter password :  
+            <input name="pass" type="password"/> 
+            <input name="submit" type="Submit"/> 
+            <input name="reset" type="Reset"/> 
+        </form></body></html> 
+Login.java 
+import java.io.IOException; 
+import java.io.PrintWriter; 
+import javax.servlet.ServletException; 
+import javax.servlet.annotation.WebServlet; 
+import javax.servlet.http.HttpServlet; 
+import javax.servlet.http.HttpServletRequest; 
+import javax.servlet.http.HttpServletResponse; 
+ 
+@WebServlet(urlPatterns = {"/login"}) 
+public class login extends HttpServlet { 
+ 
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException { 
+        response.setContentType("text/html;charset=UTF-8"); 
+        try (PrintWriter out = response.getWriter()) { 
+           String uname = request.getParameter("uname"); 
+            String pass = request.getParameter("pass"); 
+         
+            if(uname.equals("Abhay Sharma") && pass.equals("T037")){ 
+                out.println("Hello <b>"+(uname)+"</b> Welcome to Java servlet"); 
+            } 
+            else{ 
+                out.println("Login Failed"); 
+            } 
+        } 
+    } 
+ 
+
+AIM(C): Create a registration servlet in Java using JDBC. Accept the details such 
+as Username, Password, Email, and Country from the user using HTML Form and 
+store the registration details in the database. 
+index.html: 
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <title>Practical 1 C</title> 
+        <meta charset="UTF-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    </head> 
+    <body> 
+        <form action="ServReg" method="post"> 
+            <table cellpadding="1"> 
+                <thead> 
+                    <tr> 
+                        <th><b>REGISTRATION FORM</b></th> 
+                    </tr> 
+
+                </thead> 
+                <tbody> 
+                    <tr> 
+                        <td><b>First Name : </b></td> 
+                        <td><input type="text" name="fname" value=""></td> 
+                    </tr> 
+                    <tr> 
+                        <td><b>Last Name : </b></td> 
+                        <td><input type="text" name="sname" value=""></td> 
+                    </tr> 
+                    <tr> 
+                        <td><b>Zip Code : </b></td> 
+                        <td><input type="text" name="zip" value=""></td> 
+                    </tr> 
+                    <tr> 
+                        <td><b>User Name : </b></td> 
+                        <td><input type="text" name="uid" value=""></td> 
+                    </tr> 
+                    <tr> 
+                        <td><b>Password : </b></td> 
+                        <td><input type="password" name="pwd" value=""></td> 
+                    </tr> 
+                    <tr> 
+                        <td><b>Confirm Password : </b></td> 
+                        <td><input type="password" name="pwd1" value=""></td> 
+                    </tr> 
+                    <tr> 
+                        <td><b>Town : </b></td> 
+                        <td><input type="text" name="town" value=""></td> 
+                    </tr> 
+                    <tr> 
+                        <td><b>Country : </b></td> 
+                        <td><input type="text" name="country" value=""></td> 
+                    </tr> 
+                    <tr> 
+                        <td><input type="submit" value="Submit"></td> 
+                    </tr> 
+                </tbody> 
+            </table> 
+        </form> 
+    </body> 
+</html> 
+ 
+ServReg.java: 
+import java.io.IOException; 
+import java.io.PrintWriter; 
+import javax.servlet.ServletException; 
+import javax.servlet.annotation.WebServlet; 
+import javax.servlet.http.HttpServlet; 
+import javax.servlet.http.HttpServletRequest; 
+ 
+import javax.servlet.http.HttpServletResponse; 
+import java.sql.*; 
+ 
+@WebServlet(urlPatterns = {"/ServReg"}) 
+public class ServReg extends HttpServlet { 
+ 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException { 
+        response.setContentType("text/html;charset=UTF-8"); 
+        try (PrintWriter out = response.getWriter()) { 
+             
+            String connectionURL = "jdbc:mysql://localhost:3306/reg"; 
+            Connection connection = null; 
+            ResultSet rs; 
+            response.setContentType("text/html;charset=UTF-8"); 
+            String uid = request.getParameter("uid"); 
+            String fname = request.getParameter("fname"); 
+            String sname = request.getParameter("sname"); 
+            String pwd = request.getParameter("pwd"); 
+            String pwd1 = request.getParameter("pwd1"); 
+            String town = request.getParameter("town"); 
+            String country = request.getParameter("country"); 
+            String zip = request.getParameter("zip"); 
+             
+            try{ 
+                Class.forName("org.gjt.mm.mysql.Driver"); 
+                connection = DriverManager.getConnection(connectionURL,"root","root"); 
+                String sql = "insert into Register values(?,?,?,?,?,?,?,?)"; 
+                PreparedStatement pst = connection.prepareStatement(sql); 
+                pst.setString(1,uid);    
+                pst.setString(2,fname);   
+                pst.setString(3,sname);   
+                pst.setString(4,pwd);   
+                pst.setString(5,pwd1);   
+                pst.setString(6,town);   
+                pst.setString(7,country);   
+                pst.setString(8,zip); 
+                int numRowsChanged = pst.executeUpdate(); 
+                out.println("Welcome : "); 
+                out.println("'"+fname+"'"); 
+                pst.close(); 
+            } 
+            catch(ClassNotFoundException e){ 
+                out.println("Couldnt Load database driver : "+e.getMessage()); 
+            } 
+            catch(SQLException e){ 
+                out.println("SQL Exception caught : "+e.getMessage()); 
+            } 
+            catch(Exception e){ 
+                out.println(e); 
+            } 
+            finally{ 
+
+                try{ 
+                    if(connection != null) 
+                        connection.close(); 
+                } 
+                catch(SQLException ignored){ 
+                    out.println(ignored); 
+                } 
+}}}} 
+
+
+Practical 2 
+AIM(A): Create a login form using requestdispetcher. 
+index.html: 
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <title>Login Form</title> 
+        <meta charset="UTF-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    </head> 
+    <form action="LoginServlet"> 
+        Enter User ID<input type="text" name="txtId"><br> 
+        Enter Password<input type="password" name="txtPass"><br> 
+        <input type="reset"> 
+        <input type="submit" value="Click to Login"> 
+    </form> 
+</html> 
+ 
+LoginServlet.java: 
+import java.io.*; 
+import java.io.PrintWriter; 
+import javax.servlet.RequestDispatcher; 
+import javax.servlet.ServletException; 
+import javax.servlet.annotation.WebServlet; 
+import javax.servlet.http.HttpServlet; 
+import javax.servlet.http.HttpServletRequest; 
+import javax.servlet.http.HttpServletResponse; 
+ 
+@WebServlet(urlPatterns = {"/LoginServlet"}) 
+public class LoginServlet extends HttpServlet { 
+ 
+     public void doGet(HttpServletRequest request, 
+              HttpServletResponse response) throws ServletException, 
+              IOException{ 
+          PrintWriter out = response.getWriter(); 
+          out.println("<html><head>"); 
+          out.println("<title>Servlet LoginServlet</title></head>"); 
+          String uname=request.getParameter("txtId"); 
+          String upass=request.getParameter("txtPass"); 
+          if(uname.equals("Abhay Sharma")&&upass.equals("T037")) 
+          { 
+              RequestDispatcher rd= request.getRequestDispatcher("WelcomeServlet"); 
+              rd.forward(request,response); 
+          } 
+          else 
+          { 
+              out.println("<h1>Login Failed </h1>"); 
+              RequestDispatcher rd=request.getRequestDispatcher("index.html"); 
+              rd.include(request,response); 
+          } 
+          out.println("</body>"); 
+          out.println("/html>"); 
+        } 
+} 
+WelcomeServlet.java: 
+import java.io.*; 
+import java.io.PrintWriter; 
+import javax.servlet.ServletException; 
+import javax.servlet.annotation.WebServlet; 
+import javax.servlet.http.HttpServlet; 
+import javax.servlet.http.HttpServletRequest; 
+import javax.servlet.http.HttpServletResponse; 
+@WebServlet(urlPatterns = {"/WelcomeServlet"}) 
+public class WelcomeServlet extends HttpServlet { 
+     @Override 
+     public void doGet(HttpServletRequest request, 
+              HttpServletResponse response) 
+            throws ServletException , IOException{ 
+        response.setContentType("text/html"); 
+        PrintWriter out= response.getWriter(); 
+         
+        String n=request.getParameter("txtId"); 
+        out.print("Welcome:"+n); 
+        } 
+    } 
+
+AIM(B): Create a servlet that uses Cookies to store the number of times a user has 
+visited servlet. 
+index.html: 
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <title>Cookie Demo</title> 
+        <meta charset="UTF-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    </head> 
+    <body> 
+        <form action = "Page1">Enter Your Name<input type = "text" name = "txtName"><br> 
+            <input type = "submit" value = "~~~Click to Enter~~~"> 
+        </form> 
+    </body> 
+</html> 
+ 
+Page1.java: 
+import java.io.*; 
+import javax.servlet.*; 
+import javax.servlet.annotation.WebServlet; 
+import javax.servlet.http.*; 
+ 
+@WebServlet(urlPatterns = {"/Page1"}) 
+public class Page1 extends HttpServlet { 
+    @Override 
+    public void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException { 
+        PrintWriter out=response.getWriter(); 
+        out.println("<html><head><title>Page1</title></head>"); 
+        out.println("<body bgcolor=pink>"); 
+        String uname=request.getParameter("txtName"); 
+        out.println("<h1>~Welcome"+uname+"</h1>"); 
+        Cookie ck1=new Cookie("Username",uname); 
+        Cookie ck2=new Cookie("visit","1"); 
+        response.addCookie(ck1); 
+        response.addCookie(ck2); 
+        out.println("<h1><a href=Page2>Click to visit Page 2</a></h1>"); 
+        out.println("</body>"); 
+        out.println("</html>"); 
+    } 
+} 
+ 
+Page2.java: 
+import java.io.*; 
+import javax.servlet.*; 
+import javax.servlet.annotation.WebServlet; 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+import javax.servlet.http.*; 
+@WebServlet(urlPatterns = {"/Page2"}) 
+public class Page2 extends HttpServlet { 
+    @Override 
+    public void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException{ 
+        PrintWriter out=response.getWriter(); 
+        out.println("<html><head><title>Page2</title></head>"); 
+        out.println("<body bgcolor=yellow>"); 
+        Cookie [] ck= request.getCookies(); 
+        for(int i=0;i<ck.length;i++){ 
+            if(ck[i].getName().equals("visit")){ 
+                int count=Integer.parseInt(ck[i].getValue())+1; 
+                out.println("<h1>Visit no: "+count+"</h1>"); 
+                ck[i]=new Cookie("visit",count+""); 
+                response.addCookie(ck[i]); 
+            } 
+            else{ 
+                out.println(ck[i].getName()+"="+ck[i].getValue()); 
+            } 
+            out.println("<h1><a href=Page3>Click to visit page 3</a></h1>"); 
+            out.println("<h1><a href=Page4>Click to visit page 4</a></h1>"); 
+            out.println("<h1><a href=Page5>Click to visit page 5</a></h1>"); 
+            out.println("</body>"); 
+            out.println("</html>"); 
+}}} 
+ 
+Output: 
+ 
+ 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+ 
+AIM(C): Create a servlet demonstrating the use of session creation and 
+destruction. Also check whether the user has visited this page first time or has 
+visited earlier also using sessions. 
+index.html: 
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <title>Session Demo</title> 
+        <meta charset="UTF-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    </head> 
+        <form action = "SPage1" method = "get"> 
+            Enter User ID<input type = "text" name = "txtName"><br> 
+            <input type = "reset"><input type = "submit"> 
+            <p>T037 Abhay Sharma</p> 
+        </form> 
+</html> 
+ 
+SPage1.java: 
+import java.io.*; 
+import javax.servlet.*; 
+import javax.servlet.annotation.WebServlet; 
+import javax.servlet.http.*; 
+@WebServlet(urlPatterns = {"/SPage1"}) 
+public class SPage1 extends HttpServlet{ 
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, 
+IOException{ 
+        PrintWriter out = response.getWriter(); 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+        out.println("<html><head><title>Servlet Page1</title></head>"); 
+        HttpSession hs = request.getSession(true); 
+        if(hs.isNew()){ 
+            out.println("<body bgcolor =  #96D9FF>"); 
+            String name = request.getParameter("txtName"); 
+            hs.setAttribute("uname", name); 
+            hs.setAttribute("visit", "1"); 
+            out.println("<h1>Welcome First Time</h1>"); 
+        } 
+        else{ 
+            out.println("<h1> Welcome Again </h1>"); 
+            int visit = Integer.parseInt((String)hs.getAttribute("visit"))+1; 
+            out.println("<h1>You Visited"+visit+"Times</h1>"); 
+            hs.setAttribute("visit"," " + visit); 
+        } 
+        out.println("<h1>Your Session ID"+hs.getId()+"<>/h1"); 
+        out.println("<h1>You Logged in at "+new java.util.Date(hs.getCreationTime())+"</h1>"); 
+        out.println("<h1><a href = SPage2>Click for Page 2 </a></h1>"); 
+        out.println("<h1><a href = LogoutServlet>Click to Terminate Session</a></h1>"); 
+        out.println("</body>"); 
+        out.println("</html>"); 
+    }} 
+ 
+SPage2.java: 
+import java.io.*; 
+import javax.servlet.*; 
+import javax.servlet.annotation.WebServlet; 
+import javax.servlet.http.*; 
+@WebServlet(urlPatterns = {"/SPage2"}) 
+public class SPage2 extends HttpServlet{ 
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, 
+IOException{ 
+        PrintWriter out = response.getWriter(); 
+        out.println("<html><head><title>Servlet Page2</title></head>"); 
+         
+        HttpSession hs = request.getSession(false); 
+        out.println("<body bgcolor = #FECF6E>"); 
+         
+        out.println("<h1> Welcome Again </h1>"); 
+        int visit = Integer.parseInt((String)hs.getAttribute("visit"))+1; 
+        out.println("<h1>You Visited"+visit+"Times</h1>"); 
+        hs.setAttribute("visit"," " + visit); 
+         
+        out.println("<h1>Your Session ID"+hs.getId()+"<>/h1"); 
+        out.println("<h1>You Logged in at "+new java.util.Date(hs.getCreationTime())+"</h1>"); 
+        out.println("<h1><a href = SPage1>Click for Page 1 </a></h1>"); 
+        out.println("<h1><a href = LogoutServlet>Click to Terminate Session</a></h1>"); 
+        out.println("</body>"); 
+        out.println("</html>"); 
+    } 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+} 
+ 
+LogoutServlet.java: 
+import java.io.*; 
+import javax.servlet.*; 
+import javax.servlet.annotation.WebServlet; 
+import javax.servlet.http.*; 
+ 
+@WebServlet(urlPatterns = {"/LogoutServlet"}) 
+public class LogoutServlet extends HttpServlet{ 
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, 
+IOException{ 
+        PrintWriter out = response.getWriter(); 
+        out.println("<html><head><title>Servlet LogoutServlet</title></head>"); 
+         
+        out.println("<body bgcolor = #F6B0FF >"); 
+        javax.servlet.http.HttpSession hs = request.getSession(); 
+        if(hs != null){ hs.invalidate(); } 
+        out.println("<h1>You are Logged out now........</h1>"); 
+        out.println("</body>"); 
+        out.println("</html>"); 
+    } 
+} 
+ 
+Output--- 
+ 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+ 
+ 
+ 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+Practical 3 
+AIM(A): Create a Servlet application to upload and download a file. 
+index.html: 
+<!DOCTYPE html> 
+<html> 
+<head> 
+    <title>File Upload</title> 
+</head> 
+<body> 
+    <h1>File Upload Application</h1> 
+    <form action="FileUploadServlet" method="post" enctype="multipart/form-data"> 
+        Select file to upload: <input type="file" name="file" required> 
+        <br><br> 
+        <input type="submit" value="Upload File"> 
+    </form> 
+    <h2>Download Links</h2> 
+    <!-- Link to download files, ensure the path is correct --> 
+    <a href="FileDownloadServlet?filename=drawing.pdf">Download the uploaded file</a><br><br><br><br> 
+    <p>T037 Abhay Sharma</p> 
+</body> 
+</html> 
+ 
+FileUploadServlet.java: 
+import java.io.File; 
+import java.io.FileOutputStream; 
+import java.io.IOException; 
+import java.io.InputStream; 
+import java.io.OutputStream; 
+import javax.servlet.ServletException; 
+import javax.servlet.annotation.MultipartConfig; 
+import javax.servlet.annotation.WebServlet; 
+import javax.servlet.http.HttpServlet; 
+import javax.servlet.http.HttpServletRequest; 
+import javax.servlet.http.HttpServletResponse; 
+import javax.servlet.http.Part; 
+@WebServlet("/FileUploadServlet") 
+@MultipartConfig 
+public class FileUploadServlet extends HttpServlet { 
+    private static final String UPLOAD_DIR = "uploads"; 
+    @Override 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException { 
+        String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIR; 
+        File uploadDir = new File(uploadPath); 
+        if (!uploadDir.exists()) { 
+            uploadDir.mkdir(); 
+        } 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+        Part filePart = request.getPart("file"); 
+        String fileName = filePart.getSubmittedFileName(); 
+        File file = new File(uploadPath + File.separator + fileName); 
+        try (InputStream inputStream = filePart.getInputStream(); 
+             OutputStream outputStream = new FileOutputStream(file)) { 
+            byte[] buffer = new byte[4096]; 
+            int bytesRead; 
+            while ((bytesRead = inputStream.read(buffer)) != -1) { 
+                outputStream.write(buffer, 0, bytesRead); 
+            } 
+} 
+        response.getWriter().println("File uploaded successfully."); 
+}} 
+ 
+FileDownloadServlet.java: 
+import java.io.File; 
+import java.io.FileInputStream; 
+import java.io.IOException; 
+import java.io.OutputStream; 
+import javax.servlet.ServletException; 
+import javax.servlet.annotation.WebServlet; 
+import javax.servlet.http.HttpServlet; 
+import javax.servlet.http.HttpServletRequest; 
+import javax.servlet.http.HttpServletResponse; 
+@WebServlet("/FileDownloadServlet") 
+public class FileDownloadServlet extends HttpServlet { 
+    private static final String UPLOAD_DIR = "uploads"; 
+    @Override 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException { 
+        String fileName = request.getParameter("filename"); 
+        if (fileName == null) { 
+            response.getWriter().println("File name is missing."); 
+            return; 
+        } 
+        String filePath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIR + File.separator + 
+fileName; 
+        File file = new File(filePath); 
+        if (!file.exists()) { 
+            response.getWriter().println("File not found."); 
+            return; 
+        } 
+        response.setContentType("application/octet-stream"); 
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\""); 
+        try (FileInputStream inputStream = new FileInputStream(file); 
+             OutputStream outputStream = response.getOutputStream()) { 
+            byte[] buffer = new byte[4096]; 
+            int bytesRead; 
+            while ((bytesRead = inputStream.read(buffer)) != -1) { 
+                outputStream.write(buffer, 0, bytesRead); 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+}}}} 
+ 
+web.xml: 
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE glassfish-web-app PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Servlet 
+3.0//EN" "http://glassfish.org/dtds/glassfish-web-app_3_0-1.dtd"> 
+<glassfish-web-app error-url=""> 
+  <context-root>/FileUploadanDownload</context-root> 
+  <class-loader delegate="true"/> 
+  <jsp-config> 
+    <property name="keepgenerated" value="true"> 
+      <description>Keep a copy of the generated servlet class' java code.</description> 
+    </property> 
+  </jsp-config> 
+</glassfish-web-app> 
+ 
+Output: 
+Output—           
+  
+ 
+ 
+ 
+ 
+ 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+AIM(B): Create simple Servlet application to demonstrate Non-Blocking Read 
+Operation. 
+index.html: 
+<!DOCTYPE html> 
+<html> 
+<head> 
+    <title>Non-Blocking Practical</title> 
+</head> 
+<body> 
+    <form action="NBServ" method="post"> 
+        <h3>Please Click Start Button to Start Non-Blocking Read!!!</h3> 
+        <input type="submit" value="Start NB IO Read"> 
+    </form> 
+    <div>TO DO write content</div> 
+</body> 
+</html> 
+ 
+MyReadListener.java: 
+package EJPracts; 
+ 
+import java.io.IOException; 
+import java.util.logging.Level; 
+import java.util.logging.Logger; 
+import javax.servlet.AsyncContext; 
+import javax.servlet.ReadListener; 
+import javax.servlet.ServletInputStream; 
+ 
+public class MyReadListener implements ReadListener { 
+    private ServletInputStream iStream = null; 
+    private AsyncContext cnt = null; 
+    public MyReadListener(ServletInputStream in, AsyncContext ac) { 
+        this.iStream = in; 
+        this.cnt = ac; 
+    } 
+    @Override 
+    public void onDataAvailable() { 
+        try { 
+            StringBuilder sb = new StringBuilder(); 
+            int len; 
+            byte[] b = new byte[1024]; 
+ 
+            while (iStream.isReady() && (len = iStream.read(b)) != -1) { 
+                String mydata = new String(b, 0, len); 
+                sb.append(mydata); 
+            } 
+        } catch (IOException ex) { 
+            Logger.getLogger(MyReadListener.class.getName()).log(Level.SEVERE, null, ex); 
+        } 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+    } 
+    @Override 
+    public void onAllDataRead() { 
+        System.out.println("Called onAllDataRead()"); 
+        cnt.complete(); 
+    } 
+    @Override 
+    public void onError(Throwable t) { 
+        Logger.getLogger(MyReadListener.class.getName()).log(Level.SEVERE, null, t); 
+        cnt.complete(); 
+    } 
+} 
+ 
+NBServ.java: 
+import java.io.BufferedReader; 
+import java.io.BufferedWriter; 
+import java.io.IOException; 
+import java.io.InputStream; 
+import java.io.InputStreamReader; 
+import java.io.OutputStreamWriter; 
+import java.io.PrintWriter; 
+import java.net.HttpURLConnection; 
+import java.net.URL; 
+import java.util.logging.Level; 
+import java.util.logging.Logger; 
+import javax.servlet.ServletContext; 
+import javax.servlet.ServletException; 
+import javax.servlet.annotation.WebServlet; 
+import javax.servlet.http.HttpServlet; 
+import javax.servlet.http.HttpServletRequest; 
+import javax.servlet.http.HttpServletResponse; 
+ 
+@WebServlet(urlPatterns = {"/NBServ"}) 
+public class NBServ extends HttpServlet { 
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException { 
+        response.setContentType("text/html;charset=UTF-8"); 
+ 
+        String filepath = "/WEB-INF/products.txt"; 
+        ServletContext cnt = getServletContext(); 
+        InputStream iStream = cnt.getResourceAsStream(filepath); 
+ 
+        try (PrintWriter out = response.getWriter()) { 
+            String path = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() 
++ "/ReadNBServ"; 
+            out.println("<html>"); 
+            out.println("<head>"); 
+            out.println("<title>Non-Blocking I/O Servlet</title>"); 
+            out.println("</head>"); 
+            out.println("<body>"); 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+            out.println("<h1>Reading Product Names from file</h1>"); 
+            out.flush(); 
+            URL url = new URL(path); 
+            HttpURLConnection mycon = (HttpURLConnection) url.openConnection(); 
+            mycon.setChunkedStreamingMode(2); 
+            mycon.setDoOutput(true); 
+            mycon.connect(); 
+ 
+            if (iStream != null) { 
+                InputStreamReader isr = new InputStreamReader(iStream); 
+                BufferedReader br = new BufferedReader(isr); 
+                String readText; 
+                try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(mycon.getOutputStream()))) { 
+                    out.println("<div style='width=100%;height:450px;overflow:scroll;'>"); 
+                    while ((readText = br.readLine()) != null) { 
+                        out.println("<div style='background-color:khaki;width=100%;'>"); 
+                        out.println(readText); 
+                        out.println("</div><br/>"); 
+                        out.flush(); 
+                        bw.write(readText); 
+                        Thread.sleep(1000); 
+                        out.flush(); 
+                    } 
+                    out.println("</div>"); 
+                    bw.flush(); 
+                } 
+            } 
+            out.println("</body>"); 
+            out.println("</html>"); 
+        } catch (InterruptedException | IOException ex) { 
+            Logger.getLogger(NBServ.class.getName()).log(Level.SEVERE, null, ex); 
+        } 
+    } 
+    @Override 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException { 
+        processRequest(request, response); 
+    } 
+    @Override 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException { 
+        processRequest(request, response); 
+    } 
+    @Override 
+    public String getServletInfo() { 
+        return "Short description"; 
+    } 
+} 
+ 
+ReadNBServ.java: 
+import EJPracts.MyReadListener; 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+import java.io.IOException; 
+import java.io.PrintWriter; 
+import javax.servlet.AsyncContext; 
+import javax.servlet.ServletException; 
+import javax.servlet.ServletInputStream; 
+import javax.servlet.annotation.WebServlet; 
+import javax.servlet.http.HttpServlet; 
+import javax.servlet.http.HttpServletRequest; 
+import javax.servlet.http.HttpServletResponse; 
+ 
+@WebServlet(name = "ReadNBServ", urlPatterns = {"/ReadNBServ"}, asyncSupported = true) 
+public class ReadNBServ extends HttpServlet { 
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException { 
+        response.setContentType("text/html;charset=UTF-8"); 
+        try (PrintWriter out = response.getWriter()) { 
+            out.println("<!DOCTYPE html>"); 
+            out.println("<html>"); 
+            out.println("<head>"); 
+            out.println("<title>Servlet ReadNBServ</title>"); 
+            out.println("</head>"); 
+            out.println("<body>"); 
+ 
+            AsyncContext cnt = request.startAsync(); 
+            ServletInputStream iStream = request.getInputStream(); 
+            iStream.setReadListener(new MyReadListener(iStream, cnt)); 
+            out.println("</body>"); 
+            out.println("</html>"); 
+        } 
+    } 
+ 
+    @Override 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException { 
+        processRequest(request, response); 
+    } 
+    @Override 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException { 
+        processRequest(request, response); 
+    } 
+    @Override 
+    public String getServletInfo() { 
+        return "Short description"; 
+    } 
+} 
+ 
+ 
+ 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+1 Elden Base for stackable storage shelf, platinum 
+2 1.7 Cubic Foot Compact "Cube" Office Refrigerator 
+3 Cardinal Slant-D0 Ring Binder, Heavy Gauge Vinyl 
+4 R380 
+5 Holmes HEPA Air Purifier 
+6 G.E Longer_Life Indoor Recessed Floodlight Bulbs 
+7 Angle-D Binders with Locking Rings, Label Holders 
+8 SAFCO Mobile Desk Side File, Wire Frame 
+9 SAFCO Commercial Wire Shelving, Black 
+10 Xerox 198 
+11 Xerox 1980 
+Output— 
+ 
+ 
+ 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+Practical 4 
+AIM(A): Develop a simple JSP application to display values obtained from the use 
+of intrinsic objects of various types. 
+index.jsp: 
+<%@page contentType="text/html" pageEncoding="UTF-8"%>  
+<html><head><title> JSP Page</title></head>  
+<body>  
+<h1>Use of Intrinsic Objects in JSP</h1>  
+<h1>Request Object </h1>  
+Query String <%=request.getQueryString() %><br>  
+Context Path <%=request.getContextPath() %><br>  
+Remote Host  <%=request.getRemoteHost()  %><br>  
+<h1>Response Object </h1>  
+Character Encoding Type <%=response.getCharacterEncoding() %><br>  
+Content Type         
+<%=response.getContentType()  %><br>  
+Locale              <%=response.getLocale()  %><br>  
+<h1>Session Object </h1>  
+ID <%=session.getId() %><br>  
+Creation Time <%=new java.util.Date(session.getCreationTime()) %><br>  
+Last Access Time<%=new java.util.Date(session.getLastAccessedTime())  %><br>  
+<p>T037 Abhay Sharma</p> 
+</body>  
+</html> 
+Output— 
+ 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+AIM(B): Develop a simple JSP application to pass values from one page to 
+another with validations. (Name-txt, age-txt, hobbies-checkbox, email-txt, gender
+radio button).  
+index.jsp: 
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta https-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+              <title>JSP Registration</title> 
+    </head> 
+    <body> 
+        <h1>Registration Form</h1> 
+        <form action="val.jsp" method="post"> 
+              <table style="width:50%"> 
+              <tr> 
+              <td>Full Name</td> 
+              <td><input type="text" name="fullname"/></td> 
+              </tr><tr> 
+              <td>Age</td> 
+              <td><input type="text" name="age"/></td> 
+              </tr><tr> 
+              <td>E-Mail</td> 
+              <td><input type="text" name="email" size="20"/></td> 
+              </tr><tr> 
+               <td>Gender</td> 
+              <td><input type="radio" name="gender" value="Male">Male 
+              <input type="radio" name="gender" value="Female"/>Female 
+              </td> 
+              </tr><tr> 
+               <td>Hobbies</td> 
+              <td><input type="checkbox" name="hb" value="Acting"/>Acting 
+              <input type="checkbox" name="hb" value="Dancing"/>Dancing 
+              <input type="checkbox" name="hb" value="Singing"/>Singing 
+              <input type="checkbox" name="hb" value="Drawing"/>Drawing 
+              </td> 
+              </tr> 
+              </table> 
+              <input type="submit" value="Register"/> 
+              </form> 
+    </body> 
+</html> 
+ 
+val.jsp: 
+<%@page language="java" contentType="text/html" pageEncoding="UTF-8" %> 
+<%! 
+    int ageInNumbers; 
+private static final String EMAIL_REGEX="^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$"; 
+%> 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+<% 
+    String name=request.getParameter("fullname"); 
+    String age=request.getParameter("age"); 
+    String email=request.getParameter("email"); 
+    String gender=request.getParameter("gender"); 
+    String hb[]=request.getParameterValues("hb"); 
+     
+if (name == null || name.isEmpty() || age == null || age.isEmpty() || email == null || email.isEmpty() || gender == null 
+|| gender.isEmpty()) { 
+    out.println("<font color=red>Please fill all the fields</font><br>"); 
+} 
+if(!email.matches(EMAIL_REGEX)){ 
+    out.println("<font color=red>Correct Your Email Address</font><br>"); 
+} 
+try{ 
+    ageInNumbers=Integer.parseInt(age.trim()); 
+} 
+catch(NumberFormatException e){ 
+    out.println("<font color=red>Age must be numbers</font><br>"); 
+} 
+if (ageInNumbers < 18 || ageInNumbers > 60) { 
+    out.println("<font color=red>Age must be between 18 and 60</font><br>"); 
+} 
+%> 
+ 
+Your Extended Information is as follows:<br><br> 
+Full Name<b>:<%=name%></b><br> 
+Age<b>:<%=age%></b><br> 
+EMail<b>:<%=email%></b><br> 
+Gender<b>:<%=gender%></b><br> 
+Hobbies<b>: 
+    <% 
+        if(hb!=null && hb.length!=0){ 
+            for(int i=0;i<hb.length;i++){ 
+                out.println(hb[i]); 
+            } 
+        } 
+        %> 
+ 
+web.xml: 
+<?xml version="1.0" encoding="UTF-8"?> 
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web
+app_3_1.xsd" 
+  version="3.1"> 
+    <welcome-file-list> 
+        <welcome-file>index.jsp</welcome-file> 
+</welcome-file-list> 
+</web-app> 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+Output— 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+Practical 5 
+AIM(A): Create a JSP page to demonstrate the use of Expression language. 
+expressjsp.jsp: 
+<%@page contentType="text/html" pageEncoding="ISO-8859-1"%> 
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"> 
+        <title>JSPPage</title> 
+    </head> 
+    <body> 
+        <h1>T037 Abhay Sharma</h1> 
+        <div id="demoDivId"> 
+            <span id="demoExpressionId"> Expression is:</span> 
+            <span id="outputResultId">${12+2};</span>         
+            </div> 
+    </body> 
+</html> 
+Output— 
+ 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+Aim (b)  Create a JSP application to demonstrate the use of JSTL. 
+Code— 
+Hello.jsp 
+<%--  
+    Document   : hello 
+    Created on : Aug 26, 2024, 8:34:58 AM 
+    Author     : admin --%> 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<%@page contentType="text/html" pageEncoding="UTF-8"%> 
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+        <title>JSP Page</title></head><body> 
+        <h1>T053 Sonu Yadav</h1> 
+    <c:forEach var ="j" begin ="1" end="3"> 
+        Item <c:out value="${j}"/> <p> 
+        </c:forEach>    </body> </html> 
+Output— 
+ 
+ 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+Practical 6 
+AIM(A): Create a Currency Converter application using EJB. 
+Currency.html: 
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <title>Currency Converter</title> 
+    </head> 
+    <body> 
+        <form action="CCServlet"> 
+            Enter Amount<input type="text" name="amt"><br> 
+            Select Conversion Type 
+            <input type="radio" name="type" value="r2d" checked>Rupees to Dollar 
+            <input type="radio" name="type" value="d2r">Dollar to Rupees<br> 
+            <input type="reset"><input type="submit" value="CONVERT"><br> 
+            <p>T037 Abhay Sharma</p> 
+        </form> 
+    </body> 
+</html> 
+ 
+CCServlet.java: 
+import java.io.IOException; 
+import java.io.PrintWriter; 
+import javax.ejb.EJB; 
+import javax.servlet.ServletException; 
+import javax.servlet.annotation.WebServlet; 
+import javax.servlet.http.HttpServlet; 
+import javax.servlet.http.HttpServletRequest; 
+import javax.servlet.http.HttpServletResponse; 
+import mybeans.CCBean; 
+ 
+@WebServlet(urlPatterns = {"/CCServlet"}) 
+public class CCServlet extends HttpServlet { 
+    @EJB CCBean obj; 
+    public void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, 
+IOException{ 
+        PrintWriter out = response.getWriter(); 
+        double amt = Double.parseDouble(request.getParameter("amt")); 
+        if(request.getParameter("type").equals("r2d")){ 
+            out.println("<h1>"+amt+"Rupees="+obj.r2Dollar(amt)+"Dollars</h1>"); 
+        } 
+        if(request.getParameter("type").equals("d2r")){ 
+            out.println("<h1>"+amt+"Dollars="+obj.d2Rupees(amt)+"Rupees</h1>"); 
+        } 
+        out.println("T037 Abhay Sharma"); 
+    } 
+} 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+ 
+ 
+CCBean.java: 
+package mybeans; 
+import javax.ejb.Stateless; 
+@Stateless 
+public class CCBean  { 
+    public CCBean(){} 
+    public double r2Dollar(double r){return r/83.85;} 
+    public double d2Rupees(double d){return d*83.85;} 
+} 
+ 
+Output: 
+ 
+ 
+ 
+     
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+ 
+Practical 7 
+AIM(A): Develop a Simple EJB application to demonstrate servlet hit count using 
+singleton session beans. 
+index.html: 
+<html> <head>  
+        <meta charset="UTF-8">  
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+        <meta http-equiv="Refresh" content="0; URL=ServletClient"> </head>  
+</html> 
+ 
+STHitCountBean.java: 
+package ejb;  
+import javax.ejb.Singleton;  
+@Singleton  
+public class STHitCountBean {  
+    private int hitCount;  
+    public synchronized int getCount()  
+    {  
+    return hitCount++;  
+    }  
+} 
+ 
+CCClient.java: 
+package servlet;  
+import ejb.STHitCountBean;  
+import java.io.*;  
+import javax.ejb.EJB;  
+import javax.servlet.ServletException;  
+import javax.servlet.annotation.WebServlet;  
+import javax.servlet.http.*;  
+@WebServlet(name = "ServletClient", urlPatterns = {"/ServletClient"})  
+public class CCClient extends HttpServlet {  
+@EJB STHitCountBean obj;  
+@Override  
+protected void service (HttpServletRequest req, HttpServletResponse res) throws ServletException,  
+IOException  
+{  
+    res.setContentType("text/html");  
+    PrintWriter out=res.getWriter();  
+    out.print("<b>Number of times this Servlet is accessed </b>: "+obj.getCount());  
+    out.println("<br>T037 Abhay Sharma"); 
+}  
+} 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+ 
+Output: 
+ 
+AIM(B): Develop simple visitor Statistics application using Message Driven Bean 
+[Stateless Session Bean]. 
+Test.java: 
+import AdderImpl.AdderImplRemote; 
+import javax.naming.Context; 
+import javax.naming.InitialContext; 
+ 
+public class Test { 
+    public static void main(String[] args) throws Exception { 
+        Context context = new InitialContext(); 
+        AdderImplRemote remote = (AdderImplRemote) context.lookup("st1"); 
+        System.out.println("Visitor's Details:"); 
+        String details = remote.display("Abhay Sharma", "Mumbai", "T037"); 
+        System.out.println(details);  
+}} 
+ 
+ 
+AdderImpl.java: 
+package AdderImpl; 
+import javax.ejb.Stateless; 
+ 
+@Stateless(mappedName="st1") 
+public class AdderImpl implements AdderImplRemote { 
+    @Override 
+    public String display(String name, String address, String rollno) { 
+        String details = "Name: " + name + ", Address: " + address + ", Roll Number: " + rollno; 
+        System.out.println(details); 
+        return details;   
+    }} 
+ 
+ 
+ 
+T053 Sonu Yadav                                                                      Advanced Java Technology 
+AdderImplRemote.java: 
+package AdderImpl; 
+import javax.ejb.Remote; 
+ 
+@Remote 
+public interface AdderImplRemote{ 
+    String display(String name, String address, String rollno); 
+} 
+ 
+Output: 
+ 
