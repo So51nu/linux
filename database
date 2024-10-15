@@ -1,0 +1,123 @@
+Mysql command line:
+ 
+Index.html
+<!DOCTYPE html>
+<html>
+    <body>
+    <form action="TRegistration" method="post">
+        <table cellpadding="4" cellspacing="2" border="0" bgcolor="Red">
+            <tr>
+                <th colspan="2"><font size="5">REGISTRATION FORM</font><br></th>
+            </tr>
+            <tr>
+                <td><b>First Name<sup>*</sup></b></td>
+                <td><input type="text" name="fname" size="15" maxlength="20" required></td>
+            </tr>
+            <tr>
+                <td valign="top"><b>Last Name<sup>*</sup></b></td>
+                <td><input type="text" name="sname" size="15" maxlength="20" required></td>
+            </tr>
+            <tr>
+                <td><b>Zip Code<sup>*</sup></b></td>
+                <td><input type="text" name="zip" size="5" maxlength="6" required></td>
+            </tr>
+            <tr>
+                <td><b>User Name<sup>*</sup></b></td>
+                <td><input type="text" name="uid" size="10" maxlength="10" required></td>
+            </tr>
+            <tr>
+                <td valign="top"><b>Password<sup>*</sup></b></td>
+                <td><input type="password" name="pwd" maxlength="10" required></td>
+            </tr>
+            <tr>
+                <td><b>Confirm Password<sup>*</sup></b></td>
+                <td><input type="password" name="pwd1" maxlength="10" required></td>
+            </tr>
+            <tr>
+                <td><b>Town<sup>*</sup></b></td>
+                <td><input type="text" name="town" maxlength="10" required></td>
+            </tr>
+            <tr>
+                <td><b>Country<sup>*</sup></b></td>
+                <td><input type="text" name="country" maxlength="10" required></td>
+            </tr>
+            <tr>
+                <td align="center" colspan="2"><hr>
+                <input type="submit" value="Submit"></td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
+TRegistration.java
+import java.sql.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet(urlPatterns = {"/TRegistration"})
+public class TRegistration extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            String connectionURL="jdbc:mysql://localhost:3306/reg";
+            Connection connection=null;
+            ResultSet rs;
+            String uid = request.getParameter("uid");
+            String fname = request.getParameter("fname");
+            String sname = request.getParameter("sname");
+            String pwd = request.getParameter("pwd");
+            String pwd1 = request.getParameter("pwd1");
+            String town = request.getParameter("town");
+            String country = request.getParameter("country");
+            String zipcode = request.getParameter("zip");
+
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                connection = DriverManager.getConnection(connectionURL,"root","root123");
+                
+                String sql = "INSERT INTO Register (uid, fname, sname, pwd, pwd1, town, country, zipcode) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setString(1, uid);
+                pst.setString(2, fname);
+                pst.setString(3, sname);
+                pst.setString(4, pwd);
+                pst.setString(5, pwd1);
+                pst.setString(6, town);
+                pst.setString(7, country);
+                pst.setString(8, zipcode);
+
+                int numRowsChanged = pst.executeUpdate();
+                if (numRowsChanged > 0) {
+                    out.println("<h1>Welcome, " + fname + "!</h1>");
+                } else {
+                    out.println("<h1>Registration failed. Please try again.</h1>");
+                }
+
+            } catch (ClassNotFoundException e) {
+                out.println("<h1>Error: Could not load database driver.</h1>");
+                e.printStackTrace(out);
+            } catch (SQLException e) {
+                out.println("<h1>Error: Database error occurred.</h1>");
+                e.printStackTrace(out);
+            } catch (Exception e) {
+                out.println("<h1>Error: An unexpected error occurred.</h1>");
+                e.printStackTrace(out);
+            } finally {
+                try {
+                    if (connection != null) connection.close();
+                    if (connection != null) connection.close();
+                } catch (SQLException e) {
+                    out.println("<h1>Error: Could not close resources.</h1>");
+                    e.printStackTrace(out);
+                }
+            }
+        }
+    }
+}
+Output:
